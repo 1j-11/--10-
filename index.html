@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>練習</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .desc {
+            background: #eee;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .question-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .option-item {
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .option-item:hover {
+            background: #f1f1f1;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background: #fdfdfd;
+            border-left: 4px solid #666;
+            font-size: 0.9rem;
+        }
+        .btn-submit {
+            background: #222;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+        .btn-submit:hover {
+            background: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>基礎觀念複習</h1>
+    <div class="desc">
+        <strong>練習：</strong> 加分練習，總分加分ㄟ !!
+    </div>
+
+    <form id="quizForm"></form>
+
+    <button type="button" class="btn-submit" id="submitBtn">~看答案~</button>
+
+    <script>
+        const quizData = [
+            {
+                question: "1. 在網頁開發的三層結構（骨架、衣服、動作）中，當我們按下按鈕讓畫面上的卡片翻面或計算分數時，主要屬於哪一層的責任？",
+                options: [
+                    "A. Metadata（設定）",
+                    "B. JavaScript（動作）",
+                    "C. HTML（骨架）",
+                    "D. CSS（衣服）"
+                ],
+                answer: 1,
+                explanation: "JavaScript 負責處理互動邏輯、事件觸發與動態運算（也就是『動作』）。"
+            },
+            {
+                question: "2. 在 HTML 文件的第一行撰寫 &lt;!DOCTYPE html&gt; 的主要用途是什麼？如果不寫可能會導致什麼問題？",
+                options: [
+                    "A. 設定手機螢幕的可視區域；若省略，手機瀏覽時會自動縮成電腦版大小。",
+                    "B. 指定文件的文字編碼；若省略，網頁中的繁體中文會變成亂碼。",
+                    "C. 載入外部 CSS 樣式表；若省略，網頁會失去所有配色與美化效果。",
+                    "D. 宣告這是一份 HTML5 文件；若省略，瀏覽器可能改用古老的「怪異模式」進行排版。"
+                ],
+                answer: 3, 
+                explanation: "DOCTYPE 是告訴瀏覽器用標準的 HTML5 模式解析，不寫的話瀏覽器會進入怪異模式（Quirks Mode）導致排版怪怪的。"
+            },
+            {
+                question: "3. 在 HTML 的 &lt;head&gt; 設定區塊中，&lt;meta charset=\"UTF-8\"&gt; 標籤扮演了什麼角色？",
+                options: [
+                    "A. 指定網頁在瀏覽器頁籤上面顯示的標題名稱。",
+                    "B. 指定文字編碼為 UTF-8，確保全世界文字與 Emoji 都能正常顯示而不變亂碼。",
+                    "C. 讓網頁寬度自動等於手機螢幕寬度，實現響應式排版。",
+                    "D. 讓瀏覽器自動將英文網頁翻譯為繁體中文。"
+                ],
+                answer: 1, 
+                explanation: "UTF-8 就是萬國碼，沒加這行中文高機率會變亂碼。"
+            },
+            {
+                question: "4. 在 VS Code 中輸入驚嘆號 ! 並按 Tab 鍵可自動產生 HTML 骨架。關於此骨架的後續修改建議，下列何者正確？",
+                options: [
+                    "A. 應將 &lt;html lang=\"en\"&gt; 的 lang 屬性值修改為 \"zh-Hant\"，利於無障礙閱讀器與瀏覽器識別語言。",
+                    "B. 必須把 &lt;!DOCTYPE html&gt; 移動到 &lt;html&gt; 標籤內部以維持巢狀結構。",
+                    "C. 必須手動在 &lt;head&gt; 中為 &lt;meta charset=\"UTF-8\"&gt; 補上結束標籤 &lt;/meta&gt;。",
+                    "D. 應將 &lt;title&gt; 移出 &lt;head&gt; 並放入 &lt;body&gt; 區塊，文字才會顯示於畫面上。"
+                ],
+                answer: 0, 
+                explanation: "把 lang 改成 zh-Hant 可以讓瀏覽器知道這是繁體中文網頁，對拼字檢查跟螢幕閱讀器比較友善。"
+            },
+            {
+                question: "5. 關於 HTML 標題標籤 &lt;h1&gt; 到 &lt;h6&gt; 的使用觀念，下列敘述何者正確？",
+                options: [
+                    "A. 標題層級代表結構與重要程度，一頁原則上只放一個 &lt;h1&gt;，且不應為了文字大小而隨意選用層級。",
+                    "B. 數字越大的標題（如 &lt;h6&gt;）代表字體與重要性越大，&lt;h1&gt; 則是最小的標題。",
+                    "C. 只要在 HTML 中設定了 &lt;h1&gt;，後續就無法再透過 CSS 修改其字體大小與樣式。",
+                    "D. HTML 標準支援從 &lt;h1&gt; 一直到 &lt;html&gt; 的無限階層標題標籤。"
+                ],
+                answer: 0, 
+                explanation: "h1 是最重要的網頁主標題，一頁通常只會有一個，不能單純為了字體大小亂跳級（字體大小交給 CSS 處理就好）。"
+            },
+            {
+                question: "6. 在 HTML 程式碼中直接按下 Enter 換行或輸入連續多個空格，瀏覽器會套用「空白摺疊」機制。若要在同一段落內強制換行，應該使用哪一個標籤？",
+                options: [
+                    "A. &lt;br&gt;",
+                    "B. &lt;p&gt;",
+                    "C. &lt;hr&gt;",
+                    "D. &lt;strong&gt;"
+                ],
+                answer: 0, 
+                explanation: "br 就是 break line，用來在段落裡面強制換行。"
+            },
+            {
+                question: "7. 在 HTML5 中，講義推薦使用 &lt;strong&gt; 和 &lt;em&gt; 來替代舊式的 &lt;b&gt; 和 &lt;i&gt;，其主要原因為何？",
+                options: [
+                    "A. &lt;strong&gt; 與 &lt;em&gt; 不需要撰寫結束標籤，屬於寫法較簡短的空元素。",
+                    "B. &lt;strong&gt; 與 &lt;em&gt; 具備語意意義（如重要性或強調語氣），能協助螢幕閱讀器朗讀與搜尋引擎理解。",
+                    "C. &lt;b&gt; 與 &lt;i&gt; 在現代瀏覽器中已全面廢除，寫了會導致網頁直接破圖錯誤。",
+                    "D. &lt;b&gt; 與 &lt;i&gt; 只能在 CSS 樣式表中使用，無法寫在 HTML 文字檔中。"
+                ],
+                answer: 1, 
+                explanation: "HTML5 強調「語意化（Semantic）」，strong 代表這段文字真的很重要，而不只是單純把它變粗體（b）。"
+            },
+            {
+                question: "8. 若想要在網頁上建立一個點擊後會「在新分頁開啟外部網站」的超連結，正確的 HTML 標籤與屬性寫法為何？",
+                options: [
+                    "A. &lt;a href=\"https://example.com\" target=\"_blank\"&gt;前往網站&lt;/a&gt;",
+                    "B. &lt;a src=\"https://example.com\" target=\"_new\"&gt;前往網站&lt;/a&gt;",
+                    "C. &lt;a href=\"https://example.com\" link=\"blank\"&gt;前往網站&lt;/a&gt;",
+                    "D. &lt;a alt=\"https://example.com\" target=\"_self\"&gt;前往網站&lt;/a&gt;"
+                ],
+                answer: 0, 
+                explanation: "超連結用 a 標籤搭配 href，如果要開新分頁就是加上 target=\"_blank\"。"
+            },
+            {
+                question: "9. 關於 &lt;img&gt; 圖片標籤的屬性與設定規範，下列敘述何者正確？",
+                options: [
+                    "A. 修改 width 屬性設定圖片寬度時，數值後面必須強制加上 px 單位（如 width=\"150px\"）。",
+                    "B. 不論圖片檔名是大寫 .JPG 還是小寫 .jpg，Live Server 都能無視大小寫自動正確載入。",
+                    "C. &lt;img&gt; 為空元素不需要結束標籤，且一定要撰寫 alt 屬性以提供替代文字。",
+                    "D. src 屬性是用來填寫圖片的替代說明，alt 屬性才是用來填寫圖片檔案路徑。"
+                ],
+                answer: 2, 
+                explanation: "img 是單標籤（空元素），src 放路徑，alt 放圖片無法顯示時的替代文字。"
+            },
+            {
+                question: "10. 根據講義提供的提示詞公式（角色背景 + 任務 + 限制 + 輸出格式），下列哪一種問法最符合「來跟 AI 當助教」且不易讓 AI 偷渡未學過標籤的提問方式？",
+                options: [
+                    "A. 「我的網頁壞掉了，請直接幫我重新寫一份全新的 index.html 檔交作業。」",
+                    "B. 「【角色背景】我是大一新生只學過 h1~h6, p, strong。【任務】幫我新增口頭禪區塊。【限制】只用我學過的標籤，不要 CSS。【輸出格式】給程式碼並附中文註解。」",
+                    "C. 「請幫我設計一個功能齊全的線上購物網站，程式碼越複雜專業越好。」",
+                    "D. 「幫我做一個最炫酷、最具專業水準的自我介紹網頁，包含各種好看的視覺效果與動畫。」"
+                ],
+                answer: 1, 
+                explanation: "給予明確的角色、學過的範圍限制與輸出格式，AI 才不會寫一堆太進階、看不懂的語法出來。"
+            }
+        ];
+
+        const quizForm = document.getElementById('quizForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function renderQuiz() {
+            let html = '';
+            quizData.forEach((item, index) => {
+                html += `
+                    <div class="question-card">
+                        <p><strong>${item.question}</strong></p>
+                        <div class="options">
+                `;
+                item.options.forEach((opt, optIndex) => {
+                    html += `
+                        <label class="option-item">
+                            <input type="radio" name="q${index}" value="${optIndex}">
+                            <span>${opt}</span>
+                        </label>
+                    `;
+                });
+                html += `</div><div id="exp-${index}" class="explanation"></div></div>`;
+            });
+            quizForm.innerHTML = html;
+        }
+
+        renderQuiz();
+
+        submitBtn.addEventListener('click', () => {
+            quizData.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const expBox = document.getElementById(`exp-${index}`);
+                expBox.style.display = 'block';
+
+                if (selected) {
+                    const userVal = parseInt(selected.value);
+                    if (userVal === item.answer) {
+                        expBox.innerHTML = `<strong>答對</strong><br>解析：${item.explanation}`;
+                    } else {
+                        expBox.innerHTML = `<strong>答錯</strong>正確答案是：<strong>${item.options[item.answer]}</strong><br>解析：${item.explanation}`;
+                    }
+                } else {
+                    expBox.innerHTML = `<strong> 沒寫</strong>正確答案是：<strong>${item.options[item.answer]}</strong><br>解析：${item.explanation}`;
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
